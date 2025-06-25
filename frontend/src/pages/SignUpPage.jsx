@@ -2,7 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom"
 
 const SignUpPage = () => {
-  const [email,setEmail]= useState("");
+  const {searchParams} = new URL(document.location);
+  const emailValue = searchParams.get("email");
+
+  const [email, setEmail] = useState(emailValue || "");
   const [password,setPassword]= useState("");
   const [username,setUsername]= useState("");
 
@@ -28,22 +31,6 @@ const SignUpPage = () => {
             <div>
               <label
                 className="text-sm font-medium text-gray-300 block"
-                htmlFor="username"
-              >
-                User Name
-              </label>
-              <input
-                type="username"
-                className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring-2"
-                placeholder="your_username"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </div>
-            <div>
-              <label
-                className="text-sm font-medium text-gray-300 block"
                 htmlFor="email"
               >
                 Email
@@ -62,6 +49,22 @@ const SignUpPage = () => {
             <div>
               <label
                 className="text-sm font-medium text-gray-300 block"
+                htmlFor="username"
+              >
+                User Name
+              </label>
+              <input
+                type="username"
+                className="w-full px-3 py-2 mt-1 border border-gray-700 rounded-md bg-transparent text-white focus:outline-none focus:ring-2"
+                placeholder="your_username"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label
+                className="text-sm font-medium text-gray-300 block"
                 htmlFor="password"
               >
                 Password
@@ -75,8 +78,7 @@ const SignUpPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <div>
-            </div>
+            <div></div>
             <button
               type="submit"
               className="w-full px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"

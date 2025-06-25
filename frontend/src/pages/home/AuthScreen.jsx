@@ -1,13 +1,17 @@
 import { useState } from "react";
 import {ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Authscreen = () => {
 const [email, setEmail] = useState("");
 
-const handleEmailChange = (e) => {
-setEmail(e.target.value);
+const navigate = useNavigate();
+
+const handleEmailSubmit = (e) => {
+e.preventDefault();
+navigate(`/signup?email=${email}`);
+
 };
 return (
 <div className="hero-bg relative">
@@ -29,7 +33,7 @@ return (
     </h3>
     <form
     className="flex flex-col sm:flex-row gap-4 w-full md:w-1/2"
-    onSubmit={handleEmailChange}
+    onSubmit={handleEmailSubmit}
     >
     <input
         type="email"
@@ -94,7 +98,7 @@ return (
 
         <div
             className="flex items-center gap-2 absolute bottom-5 left-1/2 -translate-x-1/2 bg-black w-3/4 lg:w-1/2 h-24
-                            border border-slate-500 rounded-md px-2"
+                        border border-slate-500 rounded-md px-2"
         >
             <img
             src="/stranger-things-sm.png"
@@ -143,7 +147,11 @@ return (
     </div>
     {/* right side */}
     <div className="flex-1 relative">
-        <img src="/device-pile.png" alt="Kids img" className="mt-4 relative z-20" />
+        <img
+        src="/device-pile.png"
+        alt="Kids img"
+        className="mt-4 relative z-20"
+        />
         <video
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1/2 z-10 "
         autoPlay={true}
@@ -151,12 +159,41 @@ return (
         muted
         loop
         >
-        <source src="/hero-vid.m4v" type="video/mp4" />
+        <source src="/video-devices.m4v" type="video/mp4" />
         </video>
     </div>
     </div>
 </div>
-{/* Footer */}
+{/* Separator */}
+<div className="w-full h-[2px] bg-[#232323] " aria-hidden="true" />
+{/* 4th section */}
+<div className="py-10 bg-black text-white">
+    <div className="flex max-w-6xl mx-auto items-center justify-center md:flex-row flex-col-reverse px-4 md:px-2">
+    {/* left side */}
+    <div className="flex-1 relative">
+        <img src="/kids.png" alt="Kids img" className="mt-4 relative z-20" />
+        <video
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-1/2 z-10 "
+        autoPlay={true}
+        playsInline
+        muted
+        loop
+        >
+        <source src="/video-kids.m4v" type="video/mp4" />
+        </video>
+    </div>
+    {/* right side */}
+    <div className="flex-1 text-center md:text-left">
+        <h2 className="text-4xl md:text-5xl font-extrabold mb-4">
+        Create profiles for kids.
+        </h2>
+        <p className="text-lg md:text-xl">
+        Send kids on adventures with their favorite characters in a space made
+        just for them—free with your membership.
+        </p>
+    </div>
+    </div>
+</div>
 <div />
 </div>
 );}
