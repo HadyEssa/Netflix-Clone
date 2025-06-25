@@ -3,6 +3,7 @@ import { ENV_VARS } from "../config/envVars.js";
 import { User } from "../model/user.model.js";
 
 
+
 export async function protectRoute  (req, res, next)  {
     try {
         const token = req.cookies["jwt-netflix"];
