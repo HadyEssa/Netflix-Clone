@@ -1,4 +1,4 @@
-import { useAuthUserStore } from "../../store/AuthUser";
+import { useAuthUserStore } from "../../store/authUser";
 
 const HomeScreen = () => {
   const { logout } = useAuthUserStore();
@@ -8,6 +8,6 @@ const HomeScreen = () => {
       <button onClick={logout}>Logout</button>
     </div>
   );
-}
+};
 
-export default HomeScreen
+export default HomeScreen;
