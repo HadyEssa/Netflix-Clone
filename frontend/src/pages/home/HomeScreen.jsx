@@ -1,12 +1,12 @@
-import { useAuthUserStore } from "../../store/authUser";
+import Navbar from "../../components/Navbar";
 
 const HomeScreen = () => {
-  const { logout } = useAuthUserStore();
-  return (
-    <div>
-      HomeScreen
-      <button onClick={logout}>Logout</button>
-    </div>
+    return (
+    <>
+      <div className="relative h-screen text-white bg-black">
+        <Navbar/>
+      </div>
+    </>
   );
 };
 

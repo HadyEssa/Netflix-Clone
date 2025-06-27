@@ -21,12 +21,17 @@ export const useAuthUserStore = create((set) => ({
   login: async (credentials) => {
     set({ isLoggingIn: true });
     try {
-      const response = await axios.post("/api/v1/auth/login", credentials);
+      const response = await axios.post("/api/v1/auth/login", credentials, {
+        withCredentials: true
+      });
       set({ user: response.data.user, isLoggingIn: false });
       toast.success("Login successful");
+      return { success: true };
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      const errorMessage = error.response?.data?.message || "Login failed. Please check your credentials and try again.";
       set({ user: null, isLoggingIn: false });
+      toast.error(errorMessage);
+      return { success: false, error: errorMessage };
     }
   },
   logout: async () => {
@@ -43,12 +48,12 @@ export const useAuthUserStore = create((set) => ({
   authcheck: async () => {
     set({ isChecking: true });
     try {
-      const response = await axios.get("/api/v1/auth/authcheck", { 
+      const response = await axios.get("/api/v1/auth/authcheck", {
         withCredentials: true,
         // Don't throw error for 401 responses
-        validateStatus: (status) => status < 500
+        validateStatus: (status) => status < 500,
       });
-      
+
       if (response.status === 200 && response.data.user) {
         set({ user: response.data.user, isChecking: false });
       } else {
@@ -56,7 +61,7 @@ export const useAuthUserStore = create((set) => ({
         set({ user: null, isChecking: false });
       }
     } catch (error) {
-      console.error('Auth check error:', error);
+      console.error("Auth check error:", error);
       // Only show error for unexpected errors, not for 401
       if (error.response?.status !== 401) {
         toast.error("Authentication check failed. Please try again.");

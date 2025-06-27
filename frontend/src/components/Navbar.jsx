@@ -1,0 +1,76 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { LogOut, Menu, Search } from "lucide-react";
+import { useAuthUserStore } from "../store/authUser";
+
+const Navbar = () => {
+const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const toggleMobileMenu = () => {
+setIsMobileMenuOpen(!isMobileMenuOpen);
+};
+const { user, logout } = useAuthUserStore();
+  return (
+    <header className="max-w-6xl mx-auto flex flex-wrap items-center justify-between p-4 h-20">
+      <div className="flex items-center gap-6 z-50">
+        <Link to="/">
+          <img
+            src="/netflix-logo.png"
+            alt="netflix Logo"
+            className="w-32 sm:w-40"
+          />
+        </Link>
+        {/* Desktop navbar */}
+        <div className="hidden sm:flex gap-6 items-center ml-8">
+          <Link to="/movie" className="hover:underline">
+            Movies
+          </Link>
+          <Link to="/" className="hover:underline">
+            Tv Shows
+          </Link>
+          <Link to="/history" className="hover:underline">
+            Search History
+          </Link>
+        </div>
+      </div>
+      
+      {/* Right side icons */}
+      <div className="flex gap-4 items-center z-50">
+        <Link to={"/search"}>
+          <Search className="size-6 cursor-pointer" />
+        </Link>
+        {user?.image ? (
+          <img
+            src={user.image}
+            alt="avatar"
+            className="h-8 w-8 rounded cursor-pointer"
+          />
+        ) : (
+          <div className="h-8 w-8 rounded-full bg-gray-600 flex items-center justify-center text-white">
+            {user?.email?.charAt(0).toUpperCase()}
+          </div>
+        )}
+        <LogOut className="size-6 cursor-pointer" onClick={logout} />
+        <div className="sm:hidden">
+          <Menu className="cursor-pointer size-6" onClick={toggleMobileMenu} />
+        </div>
+      </div>
+
+      {/* Mobile navbar */}
+      {isMobileMenuOpen && (
+        <div className="sm:hidden w-full mt-4 bg-black border rounded border-gray-800 z-50">
+          <Link to="/movie" className="hover:underline block p-2" onClick={toggleMobileMenu}>
+            Movies
+          </Link>
+          <Link to="/" className="hover:underline block p-2" onClick={toggleMobileMenu}>
+            Tv Shows
+          </Link>
+          <Link to="/history" className="hover:underline block p-2" onClick={toggleMobileMenu}>
+            Search History
+          </Link>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Navbar;

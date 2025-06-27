@@ -11,16 +11,11 @@ import { useAuthUserStore } from "./store/authUser";
 
 const App = () => {
   const { user, isChecking, authcheck } = useAuthUserStore();
-  
+
   useEffect(() => {
-    // Only run authcheck if we don't have a user yet
-    if (!user) {
-      authcheck().catch(console.error);
-    }
-  }, [authcheck, user]);
-  
-  // Only show loading if we're actively checking and have no user
-  if (isChecking && !user) {
+    authcheck();
+  }, [authcheck]);
+  if (isChecking) {
     return (
       <div className="h-screen">
         <div className="flex justify-center items-center bg-black ">
