@@ -6,7 +6,7 @@ export const useAuthUserStore = create((set) => ({
   isSigningUp: false,
   isLoggingIn: false,
   isLoggingOut: false,
-  isChecking: false,
+  isCheckingAuth: false,
   signup: async (credentials) => {
     set({ isSigningUp: true });
     try {
@@ -22,13 +22,15 @@ export const useAuthUserStore = create((set) => ({
     set({ isLoggingIn: true });
     try {
       const response = await axios.post("/api/v1/auth/login", credentials, {
-        withCredentials: true
+        withCredentials: true,
       });
       set({ user: response.data.user, isLoggingIn: false });
       toast.success("Login successful");
       return { success: true };
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Login failed. Please check your credentials and try again.";
+      const errorMessage =
+        error.response?.data?.message ||
+        "Login failed. Please check your credentials and try again.";
       set({ user: null, isLoggingIn: false });
       toast.error(errorMessage);
       return { success: false, error: errorMessage };
@@ -46,7 +48,7 @@ export const useAuthUserStore = create((set) => ({
     }
   },
   authcheck: async () => {
-    set({ isChecking: true });
+    set({ isCheckingAuth: true });
     try {
       const response = await axios.get("/api/v1/auth/authcheck", {
         withCredentials: true,
@@ -55,10 +57,10 @@ export const useAuthUserStore = create((set) => ({
       });
 
       if (response.status === 200 && response.data.user) {
-        set({ user: response.data.user, isChecking: false });
+        set({ user: response.data.user, isCheckingAuth: false });
       } else {
         // If not authenticated, just set user to null without showing error
-        set({ user: null, isChecking: false });
+        set({ user: null, isCheckingAuth: false });
       }
     } catch (error) {
       console.error("Auth check error:", error);
@@ -66,7 +68,7 @@ export const useAuthUserStore = create((set) => ({
       if (error.response?.status !== 401) {
         toast.error("Authentication check failed. Please try again.");
       }
-      set({ user: null, isChecking: false });
+      set({ user: null, isCheckingAuth: false });
     }
   },
 }));

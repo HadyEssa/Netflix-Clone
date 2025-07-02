@@ -12,7 +12,6 @@ setIsMobileMenuOpen(!isMobileMenuOpen);
 const { user, logout } = useAuthUserStore();
 
 const { contentType, setContentType } = useContentStore();
-console.log("contnetType",contentType)
   return (
     <header className="max-w-6xl mx-auto flex flex-wrap items-center justify-between p-4 h-20">
       <div className="flex items-center gap-6 z-50">
@@ -25,7 +24,7 @@ console.log("contnetType",contentType)
         </Link>
         {/* Desktop navbar */}
         <div className="hidden sm:flex gap-6 items-center ml-8">
-          <Link to="/movie" className="hover:underline" onClick={() => setContentType("movie")}>
+          <Link to="/" className="hover:underline" onClick={() => setContentType("movie")}>
             Movies
           </Link>
           <Link to="/" className="hover:underline" onClick={() => setContentType("tv")}>
