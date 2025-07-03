@@ -174,13 +174,12 @@ const WatchPage = () => {
 
   return (
     <div className="bg-black min-h-screen text-white">
-      <div className="mx-auto container px-4 py-8 h-full">
-        <Navbar />
-
-        <div className="mb-4">
+      <Navbar />
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8">
+        <div className="mb-4 sm:mb-6">
           <button
             onClick={() => setShowMovie(!showMovie)}
-            className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-all"
+            className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-all text-sm sm:text-base"
           >
             {showMovie ? "Show Trailers" : "Show Movie"}
           </button>
@@ -350,36 +349,76 @@ const WatchPage = () => {
           </>
         )}
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-20 max-w-6xl mx-auto">
-          <div className="mb-4 md:mb-0">
-            <h2 className="text-5xl font-bold text-balance">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 w-full">
+          <div className="w-full lg:w-2/3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-balance mb-2 sm:mb-3 md:mb-4">
               {content?.title || content?.name}
             </h2>
-            <p className="mt-2 text-lg">
-              {formatReleaseDate(
-                content?.release_date || content?.first_air_date
-              )}{" "}
-              |{" "}
-              {content?.adult ? (
-                <span className="text-red-600">18+</span>
-              ) : (
-                <span className="text-green-600">PG-13</span>
-              )}{" "}
+
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-xs sm:text-sm md:text-base mb-2 sm:mb-3 md:mb-4">
+              {content?.release_date || content?.first_air_date ? (
+                <span className="text-gray-300">
+                  {formatReleaseDate(content?.release_date || content?.first_air_date)}
+                </span>
+              ) : null}
+              
+              {content?.runtime && (
+                <span className="text-gray-300">
+                  • {Math.floor(content.runtime / 60)}h {content.runtime % 60}m
+                </span>
+              )}
+              
+              {content?.vote_average ? (
+                <div className="flex items-center gap-1">
+                  <span className="text-yellow-400">★</span>
+                  <span>{content.vote_average.toFixed(1)}</span>
+                </div>
+              ) : null}
+              
+              {content?.adult && (
+                <span className="border border-red-500 text-red-500 text-xs px-2 py-0.5 rounded">
+                  18+
+                </span>
+              )}
+            </div>
+            
+            {content?.genres?.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {content.genres.map(genre => (
+                  <span key={genre.id} className="bg-gray-800 text-gray-200 text-xs sm:text-sm px-2 py-1 rounded">
+                    {genre.name}
+                  </span>
+                ))}
+              </div>
+            )}
+            
+            <p className="text-gray-300 text-sm sm:text-base leading-relaxed mt-2 sm:mt-3">
+              {content?.overview || 'No overview available.'}
             </p>
-            <p className="mt-4 text-lg">{content?.overview}</p>
           </div>
-          <img
-            src={ORIGINAL_IMG_BASE_URL + content?.poster_path}
-            alt="Poster image"
-            className="max-h-[600px] rounded-md"
-          />
+          
+          {content?.poster_path && (
+            <div className="w-full lg:w-1/3 flex justify-center lg:justify-end mt-4 lg:mt-0">
+              <div className="w-full max-w-xs lg:max-w-none">
+                <img
+                  src={`${ORIGINAL_IMG_BASE_URL}${content.poster_path}`}
+                  alt={`${content.title || content.name} poster`}
+                  className="w-full h-auto max-h-[400px] sm:max-h-[500px] object-contain rounded-lg shadow-lg"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {similarContent?.length > 0 && (
-          <div className="mt-12 max-w-5xl mx-auto relative">
-            <h3 className="text-3xl font-bold mb-4">Similar Movies/TV Shows</h3>
+          <div className="mt-6 sm:mt-8 md:mt-10 w-full relative">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 md:mb-4 px-2 sm:px-0">
+              Similar {contentType === 'movie' ? 'Movies' : 'TV Shows'}
+            </h3>
+
             <div
-              className="flex overflow-x-scroll scrollbar-hide gap-4 pb-4 group"
+              className="flex overflow-x-auto scrollbar-hide gap-2 sm:gap-3 md:gap-4 pb-4 group px-2 sm:px-0 snap-x snap-mandatory"
               ref={sliderRef}
             >
               {similarContent.map((content) => {
@@ -388,27 +427,57 @@ const WatchPage = () => {
                   <Link
                     key={content.id}
                     to={`/watch/${content.id}`}
-                    className="w-52 flex-none"
+                    className="w-28 sm:w-36 md:w-44 lg:w-52 flex-none transition-transform hover:scale-105 snap-start"
                   >
-                    <img
-                      src={SMALL_IMG_BASE_URL + content.poster_path}
-                      alt="Poster path"
-                      className="w-full h-auto rounded-md"
-                    />
-                    <h4 className="mt-2 text-lg font-semibold">
+                    <div className="relative aspect-[2/3] w-full rounded-md overflow-hidden bg-gray-800">
+                      <img
+                        src={SMALL_IMG_BASE_URL + content.poster_path}
+                        alt={content.title || content.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/300x450?text=No+Image';
+                        }}
+                      />
+                    </div>
+                    <h4 className="mt-2 text-sm sm:text-base font-medium line-clamp-2">
                       {content.title || content.name}
                     </h4>
                   </Link>
                 );
               })}
+
               <ChevronRight
-                className="absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600 text-white rounded-full"
+                className="hidden sm:block absolute top-1/2 -translate-y-1/2 right-2 w-8 h-8
+                  opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer
+                  bg-red-600/80 text-white rounded-full hover:bg-red-700 z-10"
                 onClick={scrollRight}
+                aria-label="Scroll right"
               />
               <ChevronLeft
-                className="absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600 text-white rounded-full"
+                className="hidden sm:block absolute top-1/2 -translate-y-1/2 left-2 w-8 h-8 opacity-0 
+                  group-hover:opacity-100 transition-all duration-300 cursor-pointer bg-red-600/80 
+                  text-white rounded-full hover:bg-red-700 z-10"
                 onClick={scrollLeft}
+                aria-label="Scroll left"
               />
+              
+              {/* Mobile navigation */}
+              <div className="sm:hidden flex justify-center gap-4 mt-3">
+                <button 
+                  onClick={scrollLeft}
+                  className="p-2 bg-gray-700/80 rounded-full hover:bg-gray-600 transition-colors"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button 
+                  onClick={scrollRight}
+                  className="p-2 bg-gray-700/80 rounded-full hover:bg-gray-600 transition-colors"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
             </div>
           </div>
         )}

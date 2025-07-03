@@ -61,7 +61,7 @@ const { contentType, setContentType } = useContentStore();
       {/* Mobile navbar */}
       {isMobileMenuOpen && (
         <div className="sm:hidden w-full mt-4 bg-black border rounded border-gray-800 z-50">
-          <Link to="/movie" className="hover:underline block p-2" onClick={toggleMobileMenu}>
+          <Link to="/" className="hover:underline block p-2" onClick={toggleMobileMenu}>
             Movies
           </Link>
           <Link to="/" className="hover:underline block p-2" onClick={toggleMobileMenu}>
