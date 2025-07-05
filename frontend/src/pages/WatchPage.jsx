@@ -68,7 +68,7 @@ const WatchPage = () => {
 	}, [contentType, id]);
 
 	const handleNext = () => {
-		if (currentTrailerIdx < trailers.length - 1) setCurrentTrailerIdx(currentTrailerIdx + 1);
+		if (currentTrailerIdx < trailers?.length - 1) setCurrentTrailerIdx(currentTrailerIdx + 1);
 	};
 	const handlePrev = () => {
 		if (currentTrailerIdx > 0) setCurrentTrailerIdx(currentTrailerIdx - 1);
@@ -106,7 +106,7 @@ const WatchPage = () => {
 			<div className='mx-auto container px-4 py-8 h-full'>
 				<Navbar />
 
-				{trailers.length > 0 && (
+				{trailers?.length > 0 && (
 					<div className='flex justify-between items-center mb-4'>
 						<button
 							className={`
@@ -123,7 +123,7 @@ const WatchPage = () => {
 						<button
 							className={`
 							bg-gray-500/70 hover:bg-gray-500 text-white py-2 px-4 rounded ${
-								currentTrailerIdx === trailers.length - 1 ? "opacity-50 cursor-not-allowed " : ""
+								currentTrailerIdx === trailers?.length - 1 ? "opacity-50 cursor-not-allowed " : ""
 							}}
 							`}
 							disabled={currentTrailerIdx === trailers.length - 1}
@@ -135,7 +135,7 @@ const WatchPage = () => {
 				)}
 
 				<div className='aspect-video mb-8 p-2 sm:px-10 md:px-32'>
-					{trailers.length > 0 && (
+					{trailers?.length > 0 && (
 						<ReactPlayer
 							controls={true}
 							width={"100%"}
@@ -178,7 +178,7 @@ const WatchPage = () => {
 					/>
 				</div>
 
-				{similarContent.length > 0 && (
+				{similarContent?.length > 0 && (
 					<div className='mt-12 max-w-5xl mx-auto relative'>
 						<h3 className='text-3xl font-bold mb-4'>Similar Movies/Tv Show</h3>
 

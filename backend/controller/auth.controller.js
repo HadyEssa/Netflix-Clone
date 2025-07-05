@@ -18,7 +18,7 @@ export async function signup(req, res) {
       return res.status(400).json({ success: false, message: "Invalid email" });
     }
 
-    if (password.length < 6) {
+    if (password?.length < 6) {
       return res.status(400).json({
         success: false,
         message: "Password must be at least 6 characters",

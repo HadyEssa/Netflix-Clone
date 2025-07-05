@@ -58,7 +58,7 @@ const HomeScreen = () => {
 						</p>
 
 						<p className='mt-4 text-lg'>
-							{trendingContent?.overview.length > 200
+							{trendingContent?.overview?.length > 200
 								? trendingContent?.overview.slice(0, 200) + "..."
 								: trendingContent?.overview}
 						</p>
