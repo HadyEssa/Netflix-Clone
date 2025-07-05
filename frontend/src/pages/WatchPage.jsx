@@ -24,8 +24,9 @@ const WatchPage = () => {
 		const getTrailers = async () => {
 			try {
 				const res = await axios.get(`/api/v1/${contentType}/${id}/trailers`);
-				setTrailers(res.data.trailers);
+				setTrailers(res.data.content); // عدلت هنا من res.data.trailers إلى res.data.content
 			} catch (error) {
+				console.error("Error fetching trailers:", error.response?.data || error.message);
 				if (error.message.includes("404")) {
 					setTrailers([]);
 				}
@@ -126,7 +127,7 @@ const WatchPage = () => {
 								currentTrailerIdx === trailers?.length - 1 ? "opacity-50 cursor-not-allowed " : ""
 							}}
 							`}
-							disabled={currentTrailerIdx === trailers.length - 1}
+							disabled={currentTrailerIdx === trailers?.length - 1}
 							onClick={handleNext}
 						>
 							<ChevronRight size={24} />
