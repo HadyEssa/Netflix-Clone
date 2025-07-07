@@ -20,11 +20,16 @@ const SearchPage = () => {
 		setResults([]);
 	};
 
-	const handleSearch = async (e) => {
+		const handleSearch = async (e) => {
 		e.preventDefault();
 		try {
 			const res = await axios.get(`/api/v1/search/${activeTab}/${searchTerm}`);
-			setResults(res.data.content);
+			// Conditionally set results based on activeTab
+			if (activeTab === "person") {
+				setResults(res.data.results);
+			} else {
+				setResults(res.data.content);
+			}
 		} catch (error) {
 			if (error.response.status === 404) {
 				toast.error("Nothing found, make sure you are searching under the right category");
@@ -33,6 +38,7 @@ const SearchPage = () => {
 			}
 		}
 	};
+
 
 	return (
 		<div className='bg-black min-h-screen text-white'>
